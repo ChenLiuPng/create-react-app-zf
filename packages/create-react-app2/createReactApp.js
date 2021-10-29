@@ -38,4 +38,26 @@ async function createApp(appName) { // projectName
     console.log('appName',appName);
     console.log('root',root);
     console.log('originalDirectory',originalDirectory);
+
+    // 安装包
+    await run(root,appName,originalDirectory);
+}
+
+/**
+ * 
+ * @param {*} root 创建的项目的路径
+ * @param {*} appName  项目名称
+ * @param {*} originalDirectory 原来的工作目录
+ */
+function run(root,appName,originalDirectory) {
+    let scriptName = 'react-scripts'; // create生成的代码离，源文件编译，启动服务放在了react-scripts
+    let templateName = 'cra-template';
+    const allDependencies = ['react','react-dom',scriptName,templateName];
+    console.log('Installing packages. This might take a couple of minutes.');
+    console.log(
+        `Installing ${chalk.cyan('react')},${chalk.cyan('react-dom')}, 
+          and ${chalk.cyan(scriptName)}
+          ${`with ${chalk.cyan(templateName)}`}...
+        `
+    )
 }

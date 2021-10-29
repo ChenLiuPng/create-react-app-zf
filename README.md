@@ -1,3 +1,9 @@
+## 安装
 ```
-yarn workspace create-react-app2 add commander
+yarn
+```
+
+## 运行
+```
+npm run create-react-app -- myApp
 ```
