@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const packageJSON = require('./package.json');
 const  fs  = require('fs-extra'); // 加强版 增删改查
 const path = require('path');
+const  spawn  = require('cross-spawn');
 async function init() {
     let projectName;
     new Command(packageJSON.name) // 项目明
@@ -16,9 +17,7 @@ async function init() {
     await createApp(projectName)
 }
 
-module.exports = {
-    init
-}
+
 
 async function createApp(appName) { // projectName
     let root = path.resolve(appName); // 得到将生成项目的绝对目录
@@ -49,7 +48,7 @@ async function createApp(appName) { // projectName
  * @param {*} appName  项目名称
  * @param {*} originalDirectory 原来的工作目录
  */
-function run(root,appName,originalDirectory) {
+async function run(root,appName,originalDirectory) {
     let scriptName = 'react-scripts'; // create生成的代码离，源文件编译，启动服务放在了react-scripts
     let templateName = 'cra-template';
     const allDependencies = ['react','react-dom',scriptName,templateName];
@@ -60,4 +59,19 @@ function run(root,appName,originalDirectory) {
           ${`with ${chalk.cyan(templateName)}`}...
         `
     )
+    await install(root,allDependencies);
+}
+async function install(root, allDependencies) {
+    return new Promise(resolve=>{
+        const command = 'yarnpkg';
+        const args = ['add','--exact',...allDependencies,'--cwd',root];
+        console.log(Command,args);
+        const child = spawn(command,args,{stdiio:'inherit'});
+        child.on('close', resolve);
+
+    })
+}
+
+module.exports = {
+    init
 }
